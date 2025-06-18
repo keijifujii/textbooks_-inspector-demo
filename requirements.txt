@@ -1,0 +1,8 @@
+
+Flask
+pandas
+openpyxl
+xlrd
+fugashi[unidic-lite]
+
+

@@ -1,0 +1,65 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>教科書選定理由点検ツール</title>
+    <style>
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #ccc; padding: 4px; }
+      th { background: #f0f0f0; }
+    </style>
+  </head>
+  <body>
+    <h2>教科書選定理由書チェックシステム</h2>
+<h4>項目は教科、種目、発行者の略称、教科書の番号、書名、使用学年、学科、選定理由</h4>
+<h4>※空白や改行を取り除いたものをアップロードしてください。</h4>
+<h4>※あくまで補佐的な点検ツールとして利用ください。</h4>
+
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul style="color: red;">
+      {% for msg in messages %}<li>{{ msg }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" enctype="multipart/form-data">
+    <label for="file">別紙様式２ファイル（.xls/.xlsx）:</label>
+    <input type="file" name="file" id="file" accept=".xls,.xlsx" required><br><br>
+    <button type="submit">アップロードして点検</button>
+  </form>
+
+  {% if table_catalog %}
+    <h2>① 目録照合チェック結果</h2>
+    {{ table_catalog|safe }}
+  {% endif %}
+
+  {% if table_reason %}
+    <h2>② 選定理由 不正表記チェック結果</h2>
+    {% if table_reason.strip() %}
+      {{ table_reason|safe }}
+    {% else %}
+      <p>不正表記は検出されませんでした。</p>
+    {% endif %}
+  {% endif %}
+
+  {% if table_typos %}
+    <h2>③ 選定理由 誤字・脱字チェック結果</h2>
+    {% if table_typos.strip() %}
+      {{ table_typos|safe }}
+    {% else %}
+      <p>誤字・脱字の候補は見つかりませんでした。</p>
+    {% endif %}
+  {% endif %}
+
+  {% if download_link %}
+    <div class="download-link">
+      <a href="{{ download_link }}" download="点検結果.xlsx">
+        📥 点検結果をExcelでダウンロード
+      </a>
+    </div>
+  {% endif %}
+</body>
+</html>
