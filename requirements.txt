@@ -4,5 +4,6 @@ pandas
 openpyxl
 xlrd
 fugashi[unidic-lite]
+gunicorn
 
 
